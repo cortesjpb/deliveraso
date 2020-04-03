@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.utils import timezone
 from .buildroute import build_route
@@ -23,5 +23,5 @@ def routeurl(request):
     direcciones = [pedido['direccion'] for pedido in pedidos]
     finalurl = build_route(ubicacion,direcciones)
     context = {'finalurl':finalurl}
-    return render(request, 'pedidos/routeurl.html', context)
+    return HttpResponseRedirect(finalurl)
 
