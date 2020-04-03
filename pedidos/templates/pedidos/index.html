@@ -91,7 +91,7 @@
             var elems = document.querySelectorAll('.collapsible');
             var instances = M.Collapsible.init(colaps, options);
 
-            document.getElementById("ubicacion").value = "el valor es";
+            document.getElementById("ubicacion").value = "0";
             var tabs = document.getElementById("tabs-swipe-demo");
             var options = {'swipeable' : true}
             var mytabs = M.Tabs.init(tabs, options);
@@ -100,8 +100,8 @@
             var mytabs = M.Tabs.init(tabs2, options);
         });
 
-        var latitud;
-        var longitud;
+        var latitud = 0;
+        var longitud = 0;
 
         var options = {
         enableHighAccuracy: true,
