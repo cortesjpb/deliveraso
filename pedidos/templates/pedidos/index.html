@@ -37,21 +37,6 @@
                 </div>
             </li>
             {% endfor %}   
-            {% for pedido in noentregados %}
-            <li style="text-align: center;">
-                <div class="collapsible-header red accent-2" style="text-align: auto;"><i class="material-icons">place</i> {{pedido.direccion}} </div>
-                <div class="collapsible-body">
-                    <div class="collection">
-                        <a class="collection-item">
-                            Pedido: {{ pedido.descripcion }} 
-                        </a>
-                        <a class="collection-item">
-                            Total: {{ pedido.total }} 
-                        </a>
-                    </div>
-                </div>
-            </li>
-            {% endfor %}           
         </ul>
     </div>
     <div id="pentregados" class="col s12 scroller">
@@ -71,41 +56,8 @@
                 </div>
             </li>
             {% endfor %}
-            {% for pedido in entregados %}
-            <li style="text-align: center;">
-                <div class="collapsible-header green accent-3" style="text-align: auto;"><i class="material-icons">place</i> {{pedido.direccion}} </div>
-                <div class="collapsible-body">
-                    <div class="collection">
-                        <a class="collection-item">
-                            Pedido: {{ pedido.descripcion }} 
-                        </a>
-                        <a class="collection-item">
-                            Total: {{ pedido.total }} 
-                        </a>
-                    </div>
-                </div>
-            </li>
-            {% endfor %}
-            {% for pedido in entregados %}
-            <li style="text-align: center;">
-                <div class="collapsible-header green accent-3" style="text-align: auto;"><i class="material-icons">place</i> {{pedido.direccion}} </div>
-                <div class="collapsible-body">
-                    <div class="collection">
-                        <a class="collection-item">
-                            Pedido: {{ pedido.descripcion }} 
-                        </a>
-                        <a class="collection-item">
-                            Total: {{ pedido.total }} 
-                        </a>
-                    </div>
-                </div>
-            </li>
-            {% endfor %}
-            
         </ul>
     </div>
-
-
 
     <form name="formulario" id="formulario" method="post" action="/pedidos/routeurl/">
         <div class="fixed-action-btn">
