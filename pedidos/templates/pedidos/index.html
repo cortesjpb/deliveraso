@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <title>Pedidos</title>
+</head>
+<body >
+    
+    <div style="margin: 0.25em;">
+    <div class="card-panel teal accent-3"><h1 style="text-align: center;">ATR PEDIDOS</h1></div>
+            
+
+    <ul id="tabs-swipe-demo" class="tabs">
+        <li class="tab col s3"><a class="active" href="#pnentregados">No Entregados</a></li>
+        <li class="tab col s3"><a href="#pentregados">Entregados</a></li>
+    </ul>
+    <div id="pnentregados" class="col s12 scroller">
+        <ul name="collapsible" id="collapsible" class="collapsible popout" style="text-align: center;">
+            {% for pedido in noentregados %}
+            <li style="text-align: center;">
+                <div class="collapsible-header red accent-2" style="text-align: auto;"><i class="material-icons">place</i> {{pedido.direccion}} </div>
+                <div class="collapsible-body">
+                    <div class="collection">
+                        <a class="collection-item">
+                            Pedido: {{ pedido.descripcion }} 
+                        </a>
+                        <a class="collection-item">
+                            Total: {{ pedido.total }} 
+                        </a>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}   
+            {% for pedido in noentregados %}
+            <li style="text-align: center;">
+                <div class="collapsible-header red accent-2" style="text-align: auto;"><i class="material-icons">place</i> {{pedido.direccion}} </div>
+                <div class="collapsible-body">
+                    <div class="collection">
+                        <a class="collection-item">
+                            Pedido: {{ pedido.descripcion }} 
+                        </a>
+                        <a class="collection-item">
+                            Total: {{ pedido.total }} 
+                        </a>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}           
+        </ul>
+    </div>
+    <div id="pentregados" class="col s12 scroller">
+        <ul class="collapsible popout" style="text-align: center;">
+            {% for pedido in entregados %}
+            <li style="text-align: center;">
+                <div class="collapsible-header green accent-3" style="text-align: auto;"><i class="material-icons">place</i> {{pedido.direccion}} </div>
+                <div class="collapsible-body">
+                    <div class="collection">
+                        <a class="collection-item">
+                            Pedido: {{ pedido.descripcion }} 
+                        </a>
+                        <a class="collection-item">
+                            Total: {{ pedido.total }} 
+                        </a>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+            {% for pedido in entregados %}
+            <li style="text-align: center;">
+                <div class="collapsible-header green accent-3" style="text-align: auto;"><i class="material-icons">place</i> {{pedido.direccion}} </div>
+                <div class="collapsible-body">
+                    <div class="collection">
+                        <a class="collection-item">
+                            Pedido: {{ pedido.descripcion }} 
+                        </a>
+                        <a class="collection-item">
+                            Total: {{ pedido.total }} 
+                        </a>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+            {% for pedido in entregados %}
+            <li style="text-align: center;">
+                <div class="collapsible-header green accent-3" style="text-align: auto;"><i class="material-icons">place</i> {{pedido.direccion}} </div>
+                <div class="collapsible-body">
+                    <div class="collection">
+                        <a class="collection-item">
+                            Pedido: {{ pedido.descripcion }} 
+                        </a>
+                        <a class="collection-item">
+                            Total: {{ pedido.total }} 
+                        </a>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+            
+        </ul>
+    </div>
+
+
+
+    <form name="formulario" id="formulario" method="post" action="/pedidos/routeurl/">
+        <div class="fixed-action-btn">
+            {% csrf_token %}
+            <a class="btn-floating btn-large waves-effect waves-light red" target="_blank">
+            <i class="large material-icons">add</i>
+            </a>
+            <input type="hidden" name="ubicacion" id="ubicacion" value="1"/>
+        </div>
+    </form>
+
+    <div class="row center"  style="width: max-content;">
+        <a name="enviar" id="enviar" class="btn-large waves-effect waves-light" target="_blank"><i class="material-icons left">directions_car</i>Mapa</a>
+    </div>
+    </div>
+
+    <style>
+        .scroller{
+            overflow-x: hidden;
+        }
+    </style>
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            M.AutoInit();
+
+            var colaps = document.getElementById("collapsible");
+            var elems = document.querySelectorAll('.collapsible');
+            var instances = M.Collapsible.init(colaps, options);
+
+            document.getElementById("ubicacion").value = "el valor es";
+            var tabs = document.getElementById("tabs-swipe-demo");
+            var options = {'swipeable' : true}
+            var mytabs = M.Tabs.init(tabs, options);
+            var tabs2 = document.getElementById("tabs-swipe-demo2");
+            var options = {'swipeable' : true}
+            var mytabs = M.Tabs.init(tabs2, options);
+        });
+
+        var latitud;
+        var longitud;
+
+        var options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+        };
+
+        function success(pos) {
+        var crd = pos.coords;
+        latitud = crd.latitude;
+        longitud = crd.longitude;
+
+        document.getElementById("ubicacion").value = [latitud,longitud]; 
+        }
+
+        function error(err) {
+        console.warn(`ERROR(${err.code}): ${err.message}`);
+        }
+
+        navigator.geolocation.getCurrentPosition(success, error, options);
+
+        document.getElementById("enviar").addEventListener("click", function(){            
+            document.getElementById("formulario").submit();
+         }); 
+    </script>
+</body>
+</html>
