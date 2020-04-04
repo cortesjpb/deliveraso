@@ -34,6 +34,9 @@
                             Total: {{ pedido.total }} 
                         </a>
                     </div>
+                    <a class="waves-effect waves-light btn modal-trigger" href="#modal{{ forloop.counter }}">
+                        <i class="material-icons left">check</i>Confirmar
+                    </a>
                 </div>
             </li>
             {% endfor %}   
@@ -59,13 +62,45 @@
         </ul>
     </div>
 
+    {% for pedido in noentregados %}  
+    <div id="modal{{ forloop.counter }}" class="modal bottom-sheet">
+        <div class="modal-content">        
+        <h5><i class="material-icons left">place</i>{{ pedido.direccion }}</h5>
+        <div class="row" style="text-align: center;">
+            <form class="col s12" style="margin-left: 10px;">
+            <div class="row">
+                <div class="input-field col s10">
+                    <i class="material-icons prefix">account_circle</i>
+                    <input value="{{ pedido.descripcion }}" type="text" class="validate" required>
+                    <label for="icon_prefix">Pedido</label>
+                </div>
+                <div class="input-field inline col s5">
+                    <i class="material-icons prefix">monetization_on</i>
+                    <input type="number" value="{{ pedido.total|lower }}" step="any" id="monetization_on"  class="validate" required>
+                    <label for="monetization_on">Total</label>
+                </div>
+                <div class="input-field inline col s5">
+                    <button class="btn waves-effect waves-light" type="submit" name="action">
+                        Confirmar
+                    </button>
+                </div>
+            </div>            
+            </form>
+        </div>
+        </div>
+        
+    </div>
+
+    
+    {% endfor %}
+
     <form name="formulario" id="formulario" method="post" action="/pedidos/routeurl/">
         <div class="fixed-action-btn">
             {% csrf_token %}
             <a class="btn-floating btn-large waves-effect waves-light red" target="_blank">
             <i class="large material-icons">add</i>
             </a>
-            <input type="hidden" name="ubicacion" id="ubicacion" value="1"/>
+            <input type="hidden" name="ubicacion" id="ubicacion" value="0"/>
         </div>
     </form>
 
@@ -86,6 +121,7 @@
         
         document.addEventListener('DOMContentLoaded', function() {
             M.AutoInit();
+
 
             var colaps = document.getElementById("collapsible");
             var elems = document.querySelectorAll('.collapsible');

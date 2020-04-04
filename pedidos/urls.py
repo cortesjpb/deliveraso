@@ -6,4 +6,5 @@ app_name = 'pedidos'
 urlpatterns = [
     path('', views.index, name='index'),
     path('routeurl/', views.routeurl, name='routeurl'),
+    path('addpedido/', views.addpedido, name='addpedido'),
 ]

@@ -23,5 +23,12 @@ def routeurl(request):
     direcciones = [pedido['direccion'] for pedido in pedidos]
     finalurl = build_route(ubicacion,direcciones)
     context = {'finalurl':finalurl}
-    return HttpResponseRedirect(finalurl)
+    if finalurl[0] == 'N':
+        return render(request, 'pedidos/routeurl.html', context)
+    else:
+        return HttpResponseRedirect(finalurl)
+
+def addpedido(request):
+    context = {}
+    return render(request, 'pedidos/addpedido.html', context)
 
