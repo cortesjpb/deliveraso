@@ -34,7 +34,7 @@
                             Total: {{ pedido.0.total }} 
                         </a>
                     </div>
-                    <a id="modalbutton{{pedido.1}}" class="waves-effect waves-light btn modal-trigger" href="#modalconf">
+                    <a id="modalbutton{{pedido.1}}" class="waves-effect waves-light btn modal-trigger" href="#modalconf">   
                         <i class="material-icons left">check</i>Confirmar
                     </a>
                 </div>
@@ -79,7 +79,7 @@
                     <label for="monetization_on">Total</label>
                 </div>
                 <div class="input-field inline col s5">
-                    <button name="confirmacion" id="confirmacion" class="btn waves-effect waves-light" type="submit">
+                    <button name="confirmacion" id="confirmacion" class="btn waves-effect waves-light">
                         Entregado
                     </button>
                 </div>
@@ -89,7 +89,7 @@
         </div>
     </div>
 
-    <form name="confirmacionform" id="confirmacionform" method="post" action="{% url 'pedidos:index' %}">
+    <form name="confirmacionform" id="confirmacionform" method="post">
         {% csrf_token %}
         <input type="hidden" name="confirmval" id="confirmval" value="{{noentregados|length}}"/>        
     </form>

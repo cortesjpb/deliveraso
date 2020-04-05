@@ -10,13 +10,13 @@ import datetime
 # Create your views here.
 
 def index(request):
-
+    
     if request.POST.get('confirmval'):
         id = int(request.POST['confirmval'])
         pedido = Pedido.objects.get(pk=id)
         pedido.entregado = True
         pedido.save()
-
+        
     noentregados = Pedido.objects.filter(entregado=False)
     noentregados = [(pedido,pedido.id) for pedido in noentregados]
     entregados = Pedido.objects.filter(entregado=True)
