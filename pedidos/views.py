@@ -10,7 +10,7 @@ import datetime
 # Create your views here.
 
 def index(request):
-    
+
     if request.POST.get('confirmval'):
         id = int(request.POST['confirmval'])
         pedido = Pedido.objects.get(pk=id)
@@ -36,6 +36,7 @@ def routeurl(request):
         return HttpResponseRedirect(finalurl)
 
 def addpedido(request):
+    
     context = {}
     return render(request, 'pedidos/addpedido.html', context)
 

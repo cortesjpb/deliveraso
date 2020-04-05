@@ -79,9 +79,9 @@
                     <label for="monetization_on">Total</label>
                 </div>
                 <div class="input-field inline col s5">
-                    <button name="confirmacion" id="confirmacion" class="btn waves-effect waves-light">
+                    <a name="confirmacion" id="confirmacion" class="btn waves-effect waves-light">
                         Entregado
-                    </button>
+                    </a>
                 </div>
             </div>            
             </form>
@@ -89,7 +89,7 @@
         </div>
     </div>
 
-    <form name="confirmacionform" id="confirmacionform" method="post">
+    <form name="confirmacionform" id="confirmacionform" method="post" action="">
         {% csrf_token %}
         <input type="hidden" name="confirmval" id="confirmval" value="{{noentregados|length}}"/>        
     </form>
@@ -167,12 +167,12 @@
 
         document.getElementById("enviar").addEventListener("click", function(){            
             document.getElementById("mapa").submit();
-         });
+        });
 
-         document.getElementById("confirmacion").addEventListener("click", function(){            
-            document.getElementById("confirmacionform").submit();
-         });    
-
+        (function(){ 
+            document.getElementById("confirmacion").addEventListener("click",function(){
+                document.getElementById("confirmacionform").submit();});
+        }())
 
          function findmodal(id){
             var clase = ".direc-text" + String(id);
