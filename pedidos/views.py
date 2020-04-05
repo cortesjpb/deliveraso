@@ -10,6 +10,16 @@ import datetime
 # Create your views here.
 
 def index(request):
+
+
+
+    if request.POST.get('confirmval'):
+        print('SI EXISTE')
+    else:
+        print('NO EXISTEEEE')
+
+
+
     noentregados = Pedido.objects.filter(entregado=False)
     entregados = Pedido.objects.filter(entregado=True)
     now = timezone.now()
@@ -18,10 +28,13 @@ def index(request):
     return render(request, 'pedidos/index.html', context)
 
 def routeurl(request):
+    if request.POST.get('ubicacion'):
+        print('SI EXISTE UBICACION')
     ubicacion = list(request.POST['ubicacion'].split(','))
     pedidos = Pedido.objects.filter(entregado=False).values()
     direcciones = [pedido['direccion'] for pedido in pedidos]
-    finalurl = build_route(ubicacion,direcciones)
+    #finalurl = build_route(ubicacion,direcciones)
+    finalurl = 'asdasd'
     context = {'finalurl':finalurl}
     if finalurl[0] == 'N':
         return render(request, 'pedidos/routeurl.html', context)

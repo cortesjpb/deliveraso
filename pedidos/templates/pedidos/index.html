@@ -24,17 +24,17 @@
         <ul name="collapsible" id="collapsible" class="collapsible popout" style="text-align: center;">
             {% for pedido in noentregados %}
             <li style="text-align: center;">
-                <div class="collapsible-header red accent-2" style="text-align: auto;"><i class="material-icons">place</i> {{pedido.direccion}} </div>
+                <div class="collapsible-header red accent-2 direc-text{{forloop.counter}}" style="text-align: auto;"><i class="material-icons">place</i> {{pedido.direccion}} </div>
                 <div class="collapsible-body">
                     <div class="collection">
-                        <a class="collection-item">
+                        <a class="collection-item pedido-text{{forloop.counter}}">
                             Pedido: {{ pedido.descripcion }} 
                         </a>
-                        <a class="collection-item">
+                        <a class="collection-item total-text{{forloop.counter}}">
                             Total: {{ pedido.total }} 
                         </a>
                     </div>
-                    <a class="waves-effect waves-light btn modal-trigger" href="#modal{{ forloop.counter }}">
+                    <a id="modalbutton{{forloop.counter}}" class="waves-effect waves-light btn modal-trigger" href="#modalconf">
                         <i class="material-icons left">check</i>Confirmar
                     </a>
                 </div>
@@ -62,26 +62,25 @@
         </ul>
     </div>
 
-    {% for pedido in noentregados %}  
-    <div id="modal{{ forloop.counter }}" class="modal bottom-sheet">
+    <div id="modalconf" class="modal bottom-sheet">
         <div class="modal-content">        
-        <h5><i class="material-icons left">place</i>{{ pedido.direccion }}</h5>
+        <h5 id="modalh"><i class="material-icons left">place</i>{{ pedido.direccion }}</h5>
         <div class="row" style="text-align: center;">
             <form class="col s12" style="margin-left: 10px;">
             <div class="row">
                 <div class="input-field col s10">
                     <i class="material-icons prefix">account_circle</i>
-                    <input value="{{ pedido.descripcion }}" type="text" class="validate" required>
+                    <input id="modalpedido" type="text" class="validate" required>
                     <label for="icon_prefix">Pedido</label>
                 </div>
                 <div class="input-field inline col s5">
                     <i class="material-icons prefix">monetization_on</i>
-                    <input type="number" value="{{ pedido.total|lower }}" step="any" id="monetization_on"  class="validate" required>
+                    <input id="modaltotal" type="number" step="any" id="monetization_on"  class="validate" required>
                     <label for="monetization_on">Total</label>
                 </div>
                 <div class="input-field inline col s5">
-                    <button class="btn waves-effect waves-light" type="submit" name="action">
-                        Confirmar
+                    <button name="confirmacion" id="confirmacion" class="btn waves-effect waves-light" type="submit">
+                        Entregado
                     </button>
                 </div>
             </div>            
@@ -92,15 +91,26 @@
     </div>
 
     
-    {% endfor %}
 
-    <form name="formulario" id="formulario" method="post" action="/pedidos/routeurl/">
+    <form name="mapa" id="mapa" method="post" action="/pedidos/routeurl/">
         <div class="fixed-action-btn">
             {% csrf_token %}
             <a class="btn-floating btn-large waves-effect waves-light red" target="_blank">
             <i class="large material-icons">add</i>
             </a>
             <input type="hidden" name="ubicacion" id="ubicacion" value="0"/>
+        </div>
+    </form>
+
+    <form name="confirmacionform" id="confirmacionform" method="post" action="">
+        <div class="fixed-action-btn">
+            {% csrf_token %}
+            <a class="btn-floating btn-large waves-effect waves-light red" target="_blank">
+            <i class="large material-icons">add</i>
+            </a>
+            {% for pedidos in noentregados %}
+            <input type="hidden" name="confirmval" id="confirmval" value="{{noentregados|length}}"/>
+            {% endfor %}
         </div>
     </form>
 
@@ -121,8 +131,7 @@
         
         document.addEventListener('DOMContentLoaded', function() {
             M.AutoInit();
-
-
+          
             var colaps = document.getElementById("collapsible");
             var elems = document.querySelectorAll('.collapsible');
             var instances = M.Collapsible.init(colaps, options);
@@ -160,8 +169,45 @@
         navigator.geolocation.getCurrentPosition(success, error, options);
 
         document.getElementById("enviar").addEventListener("click", function(){            
-            document.getElementById("formulario").submit();
-         }); 
+            document.getElementById("mapa").submit();
+         });
+
+
+        //var elemento = document.getElementById("modalconf1").querySelectorAll('.modalh1')[0].innerText;
+        //console.log(elemento);
+
+         function findmodal(id){
+            var clase = ".direc-text" + String(id);
+            var direccion = document.getElementById("pnentregados").querySelectorAll(clase)[0].innerText.split("place")[1];
+            clase = ".pedido-text" + String(id);
+            var pedido = document.getElementById("pnentregados").querySelectorAll(clase)[0].innerText.split(":")[1];
+            clase = ".total-text" + String(id);
+            var total = document.getElementById("pnentregados").querySelectorAll(clase)[0].innerText.split(":")[1];
+            //console.log(direccion.trim());
+            //console.log(pedido.trim());
+            //console.log(total.trim());
+            document.getElementById("modalh").innerText = direccion.trim();
+            document.getElementById("modalpedido").value = pedido.trim();
+            document.getElementById("modaltotal").value = parseFloat(total.trim());
+         }
+
+        function addEvent(){
+            var id = documen.getElementById("")
+        }
+
+        var hasta = parseInt(document.getElementById("confirmval").value);
+        console.log(hasta);
+        for (var i = 1; i < hasta+1; i++) {
+            (function(){ 
+                modalbutton = "modalbutton" + String(i);
+                var k = i;
+                console.log(modalbutton);
+                document.getElementById(modalbutton).addEventListener("click",function(){findmodal(k);});
+            }());
+        }
+
+        
+        //console.log(document.getElementById("confirmval").value)
     </script>
 </body>
 </html>
