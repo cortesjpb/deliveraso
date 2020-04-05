@@ -70,12 +70,12 @@
             <div class="row">
                 <div class="input-field col s10">
                     <i class="material-icons prefix">account_circle</i>
-                    <input id="modalpedido" type="text" class="validate" required>
+                    <input value="direccion" id="modalpedido" type="text" class="validate" required>
                     <label for="icon_prefix">Pedido</label>
                 </div>
                 <div class="input-field inline col s5">
                     <i class="material-icons prefix">monetization_on</i>
-                    <input id="modaltotal" type="number" step="any" id="monetization_on"  class="validate" required>
+                    <input value="1000" id="modaltotal" type="number" step="any" id="monetization_on"  class="validate" required>
                     <label for="monetization_on">Total</label>
                 </div>
                 <div class="input-field inline col s5">
@@ -191,9 +191,7 @@
             document.getElementById("modaltotal").value = parseFloat(total.trim());
          }
 
-        function addEvent(){
-            var id = documen.getElementById("")
-        }
+
 
         var hasta = parseInt(document.getElementById("confirmval").value);
         console.log(hasta);
