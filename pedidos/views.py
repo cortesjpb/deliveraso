@@ -11,25 +11,19 @@ import datetime
 
 def index(request):
 
-
-
     if request.POST.get('confirmval'):
-        print('SI EXISTE')
-    else:
-        print('NO EXISTEEEE')
-
-
+        id = int(request.POST['confirmval'])
+        pedido = Pedido.objects.get(pk=id)
+        pedido.entregado = True
+        pedido.save()
 
     noentregados = Pedido.objects.filter(entregado=False)
+    noentregados = [(pedido,pedido.id) for pedido in noentregados]
     entregados = Pedido.objects.filter(entregado=True)
-    now = timezone.now()
-    
     context = {'entregados':entregados , 'noentregados':noentregados}
     return render(request, 'pedidos/index.html', context)
 
 def routeurl(request):
-    if request.POST.get('ubicacion'):
-        print('SI EXISTE UBICACION')
     ubicacion = list(request.POST['ubicacion'].split(','))
     pedidos = Pedido.objects.filter(entregado=False).values()
     direcciones = [pedido['direccion'] for pedido in pedidos]
