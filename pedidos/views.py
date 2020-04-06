@@ -15,11 +15,12 @@ def index(request):
         id = int(request.POST['confirmval'])
         pedido = Pedido.objects.get(pk=id)
         pedido.entregado = True
+        pedido.horaentrega = timezone.now()
         pedido.save()
         
-    noentregados = Pedido.objects.filter(entregado=False)
+    noentregados = Pedido.objects.filter(entregado=False).order_by('horapedido')
     noentregados = [(pedido,pedido.id) for pedido in noentregados]
-    entregados = Pedido.objects.filter(entregado=True)
+    entregados = Pedido.objects.filter(entregado=True).order_by('-horaentrega')
     context = {'entregados':entregados , 'noentregados':noentregados}
     return render(request, 'pedidos/index.html', context)
 
