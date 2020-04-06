@@ -16,7 +16,30 @@ def index(request):
         pedido = Pedido.objects.get(pk=id)
         pedido.entregado = True
         pedido.horaentrega = timezone.now()
+        pedido.descripcion = request.POST['modalpedido']
+        pedido.total = request.POST['modaltotal']
+        pedido.horaentrega = timezone.now()
         pedido.save()
+    
+    if request.POST.get('addpedido'):
+        horapedido = timezone.now()
+        horaentrega = timezone.now()
+        direccion = request.POST['adddireccion']
+        descripcion = request.POST['addpedido']
+        total = request.POST['addtotal']
+        usuario = 1
+        entregado = False
+        nuevopedido = Pedido(
+            usuario=usuario,
+            horapedido=horapedido,
+            horaentrega=horaentrega,
+            direccion=direccion,
+            descripcion=descripcion,
+            entregado=entregado,
+            total=total
+        )
+        nuevopedido.save()
+
         
     noentregados = Pedido.objects.filter(entregado=False).order_by('horapedido')
     noentregados = [(pedido,pedido.id) for pedido in noentregados]

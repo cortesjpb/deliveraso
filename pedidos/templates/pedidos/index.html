@@ -12,7 +12,7 @@
 </head>
 <body >
     
-    <div style="margin: 0.25em;">
+    <div style="margin: 0.25em; text-align: center;">
     <div class="card-panel teal accent-3"><h1 style="text-align: center;">ATR PEDIDOS</h1></div>
             
 
@@ -34,9 +34,11 @@
                             Total: {{ pedido.0.total }} 
                         </a>
                     </div>
-                    <a id="modalbutton{{pedido.1}}" class="waves-effect waves-light btn modal-trigger" href="#modalconf">   
-                        <i class="material-icons left">check</i>Confirmar
-                    </a>
+                    <div>
+                        <a id="modalbutton{{pedido.1}}" class="waves-effect waves-light btn modal-trigger" href="#modalconf" style="margin-top: 0.5em;">   
+                            <i class="material-icons left">check</i>Confirmar
+                        </a>
+                    </div>
                 </div>
             </li>
             {% endfor %}   
@@ -62,38 +64,30 @@
         </ul>
     </div>
 
-    <div id="modalconf" class="modal bottom-sheet">
+    <div id="modalconf" class="modal bottom-sheet" style="text-align: center;">
         <div class="modal-content">        
-        <h5 id="modalh"><i class="material-icons left">place</i>Algo</h5>
+        <h5 id="modalh"><i class="material-icons">place</i>Algo</h5>
         <div class="row" style="text-align: center;">
-            <form class="col s12" style="margin-left: 10px;">
-            <div class="row">
-                <div class="input-field col s10">
-                    <i class="material-icons prefix">account_circle</i>
-                    <input value="direccion" id="modalpedido" type="text" class="validate" required>
-                    <label for="icon_prefix">Pedido</label>
-                </div>
-                <div class="input-field inline col s5">
-                    <i class="material-icons prefix">monetization_on</i>
-                    <input value="1000" id="modaltotal" type="number" step="any" id="monetization_on"  class="validate" required>
-                    <label for="monetization_on">Total</label>
-                </div>
-                <div class="input-field inline col s5">
-                    <a name="confirmacion" id="confirmacion" class="btn waves-effect waves-light">
-                        Entregado
-                    </a>
-                </div>
-            </div>            
+            <form name="confirmacionform" id="confirmacionform" method="post" action="" class="col s12" style="margin-left: 10px;">
+            {% csrf_token %}
+            <div class="input-field col s10">
+                <i class="material-icons prefix">edit</i>
+                <input value="direccion" name="modalpedido" id="modalpedido" type="text" class="validate" required>
+                <label for="modalpedido">Pedido</label>
+            </div>
+            <div class="input-field inline col s5">
+                <i class="material-icons prefix">monetization_on</i>
+                <input value="1000" name="modaltotal" id="modaltotal" type="number" step="any" id="monetization_on"  class="validate" required>
+                <label for="modaltotal">Total</label>
+            </div>
+            <div class="input-field col s11">
+                <input name="submitmodalconf" id="submitmodalconf" type="submit" class="validate btn waves-effect waves-light" required value="Confirmar">
+            </div>
+            <input type="hidden" name="confirmval" id="confirmval" value="{{noentregados|length}}"/>        
             </form>
         </div>
         </div>
     </div>
-
-    <form name="confirmacionform" id="confirmacionform" method="post" action="">
-        {% csrf_token %}
-        <input type="hidden" name="confirmval" id="confirmval" value="{{noentregados|length}}"/>        
-    </form>
-    
 
     <form name="mapa" id="mapa" method="post" action="/pedidos/routeurl/">
         <div class="fixed-action-btn">
@@ -106,14 +100,42 @@
     </form>
 
     <div class="fixed-action-btn">
-        <a class="btn-floating btn-large waves-effect waves-light red" target="_blank">
+        <a class="btn-floating btn-large waves-effect waves-light red modal-trigger" href="#modaladd" target="_blank">
             <i class="large material-icons">add</i>
         </a>
     </div>
-    
+
+    <div id="modaladd" class="modal" style="text-align: center;">
+        <div class="modal-content">
+            <h4>Nuevo Pedido</h4>
+            <div class="row" style="text-align: center;">
+                <form name="addform" id="addform" method="post" class="col s12" style="text-align: center;" action="">
+                    {% csrf_token %}
+                    <div class="input-field col s11">
+                        <i class="material-icons prefix">place</i>
+                        <input name="adddireccion" id="adddireccion" type="text" class="validate" required>
+                        <label for="adddireccion">Direccion</label>
+                    </div>
+                    <div class="input-field col s11">
+                        <i class="material-icons prefix">edit</i>
+                        <input name="addpedido" id="addpedido" type="text" class="validate" required>
+                        <label for="addpedido">Pedido</label>
+                    </div>
+                    <div class="input-field col s11">
+                        <i class="material-icons prefix">monetization_on</i>
+                        <input name="addtotal" id="addtotal" type="number" step="any" class="validate" required>
+                        <label for="addtotal">Total</label>
+                    </div>
+                    <div class="input-field col s11">
+                        <input name="addsubmit" id="addsubmit" type="submit" class="validate btn waves-effect waves-light" required value="Agregar">
+                    </div>                    
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="row center"  style="width: max-content;">
         <a name="enviar" id="enviar" class="btn-large waves-effect waves-light" target="_blank"><i class="material-icons left">directions_car</i>Mapa</a>
-    </div>
     </div>
 
     <style>
@@ -128,6 +150,7 @@
         
         document.addEventListener('DOMContentLoaded', function() {
             M.AutoInit();
+            M.updateTextFields();
           
             var colaps = document.getElementById("collapsible");
             var elems = document.querySelectorAll('.collapsible');
@@ -167,21 +190,16 @@
 
         document.getElementById("enviar").addEventListener("click", function(){            
             document.getElementById("mapa").submit();
-        });
+        });        
 
-        (function(){ 
-            document.getElementById("confirmacion").addEventListener("click",function(){
-                document.getElementById("confirmacionform").submit();});
-        }())
-
-         function findmodal(id){
+        function findmodal(id){
             var clase = ".direc-text" + String(id);
             var direccion = document.getElementById("pnentregados").querySelectorAll(clase)[0].innerText.split("place")[1];
             clase = ".pedido-text" + String(id);
             var pedido = document.getElementById("pnentregados").querySelectorAll(clase)[0].innerText.split(":")[1];
             clase = ".total-text" + String(id);
             var total = document.getElementById("pnentregados").querySelectorAll(clase)[0].innerText.split(":")[1];
-            document.getElementById("modalh").innerHTML = "<i class=\"material-icons left\">place</i>" + direccion.trim();
+            document.getElementById("modalh").innerHTML = "<i class=\"material-icons\">place</i>" + direccion.trim();
             document.getElementById("modalpedido").value = pedido.trim();
             document.getElementById("modaltotal").value = parseFloat(total.trim());
             document.getElementById("confirmval").value = String(id);            
